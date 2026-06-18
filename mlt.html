@@ -141,8 +141,8 @@
         clickArea.addEventListener('click', () => {
             if (!timerRunning) return;
             totalClick++;
-               // 每次点击增加4%进度（数值可调整控制填充速度）
-            progress += 4;
+               // 每次点击增加2%进度（数值可调整控制填充速度）
+            progress += 2;
             if (progress > 100) progress = 100;
             clickNum.innerText = totalClick;
             progressNum.innerText = Math.floor(progress);
