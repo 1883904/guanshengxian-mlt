@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关鲜生麻辣烫-点击领折扣</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+        }
+        body {
+            background: #f5f5f7;
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+        /* 顶部橙色填充区域 */
+        .top-orange-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 48%;
+            width: 0%;
+            background: #ff7800;
+            z-index: 1;
+            transition: width 0.05s linear;
+        }
+        /* 白色弹窗卡片 */
+        .pop-card {
+            position: relative;
+            z-index: 10;
+            width: 92%;
+            max-width: 520px;
+            margin: 60px auto 40px;
+            background: #fff;
+            border-radius: 20px;
+            padding: 40px 24px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        .pop-card h1 {
+            font-size: 42px;
+            color: #111;
+            margin-bottom: 16px;
+            font-weight: bold;
+        }
+        .pop-desc {
+            font-size: 20px;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+        .data-row {
+            font-size: 34px;
+            color: #222;
+            margin: 18px 0;
+        }
+        /* 下方活动文案区 */
+        .tip-text {
+            text-align: center;
+            font-size: 28px;
+            color: #ff7800;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .discount-title {
+            text-align: center;
+            font-size: 52px;
+            font-weight: 900;
+            color: #111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .thumb {
+            font-size: 56px;
+        }
+        .coupon-word {
+            text-align: center;
+            font-size: 64px;
+            font-weight: 900;
+            color: #000;
+            margin-bottom: 36px;
+        }
+        .footer-data {
+            text-align: center;
+            font-size: 26px;
+            color: #222;
+        }
+    </style>
+</head>
+<body id="clickArea">
+    <!-- 橙色填充层 -->
+    <div class="top-orange-fill" id="orangeBar"></div>
+
+    <!-- 弹窗卡片 -->
+    <div class="pop-card">
+        <h1>关鲜生麻辣烫</h1>
+        <div class="pop-desc">
+            10秒疯狂点击，填充上半屏橙色解锁<br>专属折扣
+        </div>
+        <div class="data-row">剩余时间：<span id="timeNum">10</span> s</div>
+        <div class="data-row">点击次数：<span id="clickNum">0</span></div>
+        <div class="data-row">填充进度：<span id="progressNum">0</span>%</div>
+    </div>
+
+    <!-- 底部宣传文字 -->
+    <div class="tip-text">点击屏幕任意位置填充橙色</div>
+    <div class="discount-title">
+        <span class="thumb">👍</span>
+        参与有奖 全场8折
+    </div>
+    <div class="coupon-word">优惠券</div>
+    <div class="footer-data">本次共点击<span id="finalClick">0</span>次，填充<span id="finalPro">0</span>%</div>
+
+    <script>
+        // 获取DOM元素
+        const clickArea = document.getElementById('clickArea');
+        const orangeBar = document.getElementById('orangeBar');
+        const timeNum = document.getElementById('timeNum');
+        const clickNum = document.getElementById('clickNum');
+        const progressNum = document.getElementById('progressNum');
+        const finalClick = document.getElementById('finalClick');
+        const finalPro = document.getElementById('finalPro');
+
+        // 全局变量
+        let totalClick = 0;
+        let progress = 0;
+        let timeLeft = 10;
+        let timerRunning = true;
+
+        // 倒计时逻辑
+        const countDownTimer = setInterval(() => {
+            timeLeft--;
+            timeNum.innerText = timeLeft;
+            if (timeLeft <= 0) {
+                clearInterval(countDownTimer);
+                timerRunning = false;
+                // 结束后更新底部统计
+                finalClick.innerText = totalClick;
+                finalPro.innerText = Math.floor(progress);
+            }
+        }, 1000);
+
+        // 点击事件
+        clickArea.addEventListener('click', () => {
+            if (!timerRunning) return; // 时间到禁止点击
+            totalClick++;
+            // 每次点击增加1%进度（数值可调整控制填充速度）
+            progress += 1;
+            if (progress > 100) progress = 100;
+
+            // 更新页面显示
+            clickNum.innerText = totalClick;
+            progressNum.innerText = Math.floor(progress);
+            orangeBar.style.width = progress + '%';
+        });
+    </script>
+</body>
+</html>
